@@ -20,7 +20,7 @@ const Navigation = ({ currentPage, onPageChange }: NavigationProps) => {
   return (
     <>
       {/* Desktop Navigation */}
-      <nav className="hidden lg:flex fixed top-6 left-1/2 transform -translate-x-1/2 z-50 bg-card/80 backdrop-blur-md border border-border/50 rounded-2xl px-6 py-3 shadow-xl animate-bounce-in">
+      <nav className="hidden lg:flex fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-card/90 backdrop-blur-md border border-border/50 rounded-2xl px-6 py-3 shadow-xl animate-bounce-in">
         <div className="flex space-x-1">
           {navItems.map((item, index) => {
             const Icon = item.icon;

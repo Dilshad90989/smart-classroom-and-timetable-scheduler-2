@@ -26,7 +26,7 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30">
       {/* Hero Section */}
-      <div className="px-6 py-12">
+      <div className="px-6 pt-24 pb-12 lg:pt-28">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12 animate-bounce-in">
             <h1 className="font-fredoka text-6xl font-bold gradient-text mb-4">

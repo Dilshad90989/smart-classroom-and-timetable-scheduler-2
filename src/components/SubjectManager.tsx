@@ -160,7 +160,7 @@ const SubjectManager = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-secondary/5 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-secondary/5 p-6 pt-24 lg:pt-28">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8 animate-bounce-in">

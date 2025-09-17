@@ -23,7 +23,7 @@ const App = () => {
         return <SubjectManager />;
       case 'students':
         return (
-          <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-accent/5 flex items-center justify-center">
+          <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-accent/5 flex items-center justify-center pt-24 lg:pt-28">
             <div className="text-center animate-bounce-in">
               <h1 className="font-fredoka text-4xl font-bold gradient-text mb-4">👥 Students</h1>
               <p className="text-muted-foreground">Coming soon! Student management features.</p>
@@ -32,7 +32,7 @@ const App = () => {
         );
       case 'settings':
         return (
-          <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-accent/5 flex items-center justify-center">
+          <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-accent/5 flex items-center justify-center pt-24 lg:pt-28">
             <div className="text-center animate-bounce-in">
               <h1 className="font-fredoka text-4xl font-bold gradient-text mb-4">⚙️ Settings</h1>
               <p className="text-muted-foreground">Coming soon! Customization options.</p>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Clock, MapPin, User, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Clock, MapPin, User, ChevronLeft, ChevronRight, Edit3, Plus } from 'lucide-react';
+import EditSlotModal from './EditSlotModal';
 
 interface ClassSlot {
   id: string;
@@ -12,6 +13,8 @@ interface ClassSlot {
 
 const Timetable = () => {
   const [currentWeek, setCurrentWeek] = useState(0);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [editingSlot, setEditingSlot] = useState<{ day: string; time: string; class?: ClassSlot } | null>(null);
   
   const timeSlots = [
     '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00'
@@ -19,7 +22,7 @@ const Timetable = () => {
   
   const weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
   
-  const schedule: { [key: string]: ClassSlot[] } = {
+  const [schedule, setSchedule] = useState<{ [key: string]: ClassSlot[] }>({
     Monday: [
       { id: '1', subject: 'Mathematics', teacher: 'Ms. Johnson', room: 'A101', time: '09:00', color: 'subject-math' },
       { id: '2', subject: 'Science', teacher: 'Dr. Smith', room: 'Lab B', time: '10:00', color: 'subject-science' },
@@ -42,14 +45,57 @@ const Timetable = () => {
       { id: '11', subject: 'Science', teacher: 'Dr. Smith', room: 'Lab B', time: '09:00', color: 'subject-science' },
       { id: '12', subject: 'Mathematics', teacher: 'Ms. Johnson', room: 'A101', time: '11:00', color: 'subject-math' },
     ],
-  };
+  });
+
+  // Available subjects for assignment
+  const availableSubjects = [
+    { name: 'Mathematics', teacher: 'Ms. Johnson', room: 'A101', color: 'subject-math', emoji: '🔢' },
+    { name: 'Science', teacher: 'Dr. Smith', room: 'Lab B', color: 'subject-science', emoji: '🔬' },
+    { name: 'English', teacher: 'Mr. Words', room: 'A102', color: 'subject-english', emoji: '📖' },
+    { name: 'Art', teacher: 'Ms. Creative', room: 'Art Studio', color: 'subject-art', emoji: '🎨' },
+    { name: 'PE', teacher: 'Coach Strong', room: 'Gym', color: 'subject-pe', emoji: '⚽' },
+    { name: 'Music', teacher: 'Ms. Melody', room: 'Music Room', color: 'subject-math', emoji: '🎵' },
+    { name: 'History', teacher: 'Mr. Past', room: 'A103', color: 'subject-english', emoji: '📚' },
+  ];
 
   const getClassForTimeSlot = (day: string, time: string) => {
     return schedule[day]?.find(cls => cls.time === time);
   };
 
+  const handleSlotClick = (day: string, time: string) => {
+    const existingClass = getClassForTimeSlot(day, time);
+    setEditingSlot({ day, time, class: existingClass });
+    setEditModalOpen(true);
+  };
+
+  const handleSlotSave = (newSlot: ClassSlot | null) => {
+    if (!editingSlot) return;
+
+    setSchedule(prevSchedule => {
+      const newSchedule = { ...prevSchedule };
+      
+      if (!newSchedule[editingSlot.day]) {
+        newSchedule[editingSlot.day] = [];
+      }
+
+      // Remove existing class at this time slot
+      newSchedule[editingSlot.day] = newSchedule[editingSlot.day].filter(
+        cls => cls.time !== editingSlot.time
+      );
+
+      // Add new class if provided
+      if (newSlot) {
+        newSchedule[editingSlot.day].push(newSlot);
+      }
+
+      return newSchedule;
+    });
+
+    setEditingSlot(null);
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-accent/5 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-accent/5 p-6 pt-24 lg:pt-28">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8 animate-bounce-in">
@@ -59,6 +105,16 @@ const Timetable = () => {
           <p className="font-inter text-lg text-muted-foreground">
             Your magical learning schedule awaits! ✨
           </p>
+        </div>
+
+        {/* Edit Mode Toggle */}
+        <div className="flex items-center justify-center mb-8">
+          <div className="bg-card rounded-2xl p-4 shadow-lg animate-slide-up" style={{ animationDelay: '100ms' }}>
+            <div className="flex items-center space-x-2 text-sm font-fredoka font-medium text-muted-foreground">
+              <Edit3 className="w-4 h-4" />
+              <span>✨ Click any time slot to customize your schedule! Add subjects or mark as free time.</span>
+            </div>
+          </div>
         </div>
 
         {/* Week Navigation */}
@@ -120,9 +176,19 @@ const Timetable = () => {
                     return (
                       <div 
                         key={`${day}-${time}`} 
-                        className={`time-slot min-h-[80px] ${classData ? 'occupied ' + classData.color : 'available'} animate-slide-up`}
+                        className={`time-slot min-h-[80px] ${classData ? 'occupied ' + classData.color : 'available'} animate-slide-up group cursor-pointer relative`}
                         style={{ animationDelay: `${(timeIndex * 5 + dayIndex) * 50}ms` }}
+                        onClick={() => handleSlotClick(day, time)}
                       >
+                        {/* Edit Indicator */}
+                        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                          {classData ? (
+                            <Edit3 className="w-4 h-4 text-white/70" />
+                          ) : (
+                            <Plus className="w-4 h-4 text-muted-foreground" />
+                          )}
+                        </div>
+
                         {classData ? (
                           <div className="text-white">
                             <h4 className="font-fredoka font-bold text-sm mb-1">
@@ -140,8 +206,8 @@ const Timetable = () => {
                             </div>
                           </div>
                         ) : (
-                          <div className="flex items-center justify-center h-full text-muted-foreground">
-                            <span className="text-xs font-medium">Free</span>
+                          <div className="flex items-center justify-center h-full text-muted-foreground group-hover:text-primary transition-colors">
+                            <span className="text-xs font-medium">Click to add</span>
                           </div>
                         )}
                       </div>
@@ -151,6 +217,17 @@ const Timetable = () => {
               ))}
             </div>
           </div>
+
+          {/* Edit Modal */}
+          <EditSlotModal
+            isOpen={editModalOpen}
+            onClose={() => setEditModalOpen(false)}
+            slot={editingSlot?.class || null}
+            day={editingSlot?.day || ''}
+            time={editingSlot?.time || ''}
+            onSave={handleSlotSave}
+            availableSubjects={availableSubjects}
+          />
         </div>
 
         {/* Legend */}
