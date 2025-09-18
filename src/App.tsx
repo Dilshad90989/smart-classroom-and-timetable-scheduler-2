@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Dashboard from './components/Dashboard';
 import Timetable from './components/Timetable';
 import SubjectManager from './components/SubjectManager';
+import StudentManager from './components/StudentManager';
 import Navigation from './components/Navigation';
 
 const queryClient = new QueryClient();
@@ -22,14 +23,7 @@ const App = () => {
       case 'subjects':
         return <SubjectManager />;
       case 'students':
-        return (
-          <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-accent/5 flex items-center justify-center pt-24 lg:pt-28">
-            <div className="text-center animate-bounce-in">
-              <h1 className="font-fredoka text-4xl font-bold gradient-text mb-4">👥 Students</h1>
-              <p className="text-muted-foreground">Coming soon! Student management features.</p>
-            </div>
-          </div>
-        );
+        return <StudentManager />;
       case 'settings':
         return (
           <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-accent/5 flex items-center justify-center pt-24 lg:pt-28">

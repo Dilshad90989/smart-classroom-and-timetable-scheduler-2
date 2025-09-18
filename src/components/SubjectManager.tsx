@@ -185,67 +185,71 @@ const SubjectManager = () => {
 
         {/* Add Subject Form */}
         {showAddForm && (
-          <div className="mb-8 bg-card rounded-3xl p-8 shadow-xl animate-bounce-in">
-            <h2 className="font-fredoka text-2xl font-bold mb-6 text-center">Create New Subject</h2>
-            <div className="grid md:grid-cols-2 gap-6">
+          <div className="mb-8 bg-card rounded-2xl p-6 shadow-xl animate-bounce-in max-w-2xl mx-auto">
+            <h2 className="font-fredoka text-xl font-bold mb-4 text-center">Create New Subject</h2>
+            <div className="grid grid-cols-1 gap-4">
               <input
                 type="text"
                 value={editForm.name || ''}
                 onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
-                className="w-full px-4 py-3 bg-muted rounded-xl font-fredoka placeholder-muted-foreground"
-                placeholder="Subject Name (e.g., Mathematics)"
+                className="w-full px-3 py-2 bg-muted rounded-lg font-fredoka placeholder-muted-foreground text-sm"
+                placeholder="Subject Name"
               />
               <input
                 type="text"
                 value={editForm.teacher || ''}
                 onChange={(e) => setEditForm({ ...editForm, teacher: e.target.value })}
-                className="w-full px-4 py-3 bg-muted rounded-xl font-inter placeholder-muted-foreground"
+                className="w-full px-3 py-2 bg-muted rounded-lg font-inter placeholder-muted-foreground text-sm"
                 placeholder="Teacher Name"
               />
-              <input
-                type="text"
-                value={editForm.room || ''}
-                onChange={(e) => setEditForm({ ...editForm, room: e.target.value })}
-                className="w-full px-4 py-3 bg-muted rounded-xl font-inter placeholder-muted-foreground"
-                placeholder="Room/Location"
-              />
-              <input
-                type="text"
-                value={editForm.duration || ''}
-                onChange={(e) => setEditForm({ ...editForm, duration: e.target.value })}
-                className="w-full px-4 py-3 bg-muted rounded-xl font-inter placeholder-muted-foreground"
-                placeholder="Duration (e.g., 60 min)"
-              />
-              <input
-                type="text"
-                value={editForm.emoji || ''}
-                onChange={(e) => setEditForm({ ...editForm, emoji: e.target.value })}
-                className="w-full px-4 py-3 bg-muted rounded-xl font-inter placeholder-muted-foreground text-2xl"
-                placeholder="Emoji (e.g., 🔢)"
-              />
-              <select
-                value={editForm.color || 'subject-math'}
-                onChange={(e) => setEditForm({ ...editForm, color: e.target.value })}
-                className="w-full px-4 py-3 bg-muted rounded-xl font-inter"
-              >
-                {colorOptions.map(color => (
-                  <option key={color.class} value={color.class}>{color.name}</option>
-                ))}
-              </select>
+              <div className="grid grid-cols-2 gap-4">
+                <input
+                  type="text"
+                  value={editForm.room || ''}
+                  onChange={(e) => setEditForm({ ...editForm, room: e.target.value })}
+                  className="w-full px-3 py-2 bg-muted rounded-lg font-inter placeholder-muted-foreground text-sm"
+                  placeholder="Room"
+                />
+                <input
+                  type="text"
+                  value={editForm.duration || ''}
+                  onChange={(e) => setEditForm({ ...editForm, duration: e.target.value })}
+                  className="w-full px-3 py-2 bg-muted rounded-lg font-inter placeholder-muted-foreground text-sm"
+                  placeholder="Duration"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <input
+                  type="text"
+                  value={editForm.emoji || ''}
+                  onChange={(e) => setEditForm({ ...editForm, emoji: e.target.value })}
+                  className="w-full px-3 py-2 bg-muted rounded-lg font-inter placeholder-muted-foreground text-sm"
+                  placeholder="Emoji"
+                />
+                <select
+                  value={editForm.color || 'subject-math'}
+                  onChange={(e) => setEditForm({ ...editForm, color: e.target.value })}
+                  className="w-full px-3 py-2 bg-muted rounded-lg font-inter text-sm"
+                >
+                  {colorOptions.map(color => (
+                    <option key={color.class} value={color.class}>{color.name}</option>
+                  ))}
+                </select>
+              </div>
             </div>
-            <div className="flex gap-4 mt-6">
+            <div className="flex gap-3 mt-4">
               <button
                 onClick={handleSave}
-                className="flex-1 btn-warm"
+                className="flex-1 btn-warm text-sm py-2"
               >
-                <Save className="w-5 h-5 mr-2" />
-                Create Subject
+                <Save className="w-4 h-4 mr-2" />
+                Create
               </button>
               <button
                 onClick={handleCancel}
-                className="flex-1 bg-muted hover:bg-muted/70 text-muted-foreground px-6 py-3 rounded-full font-fredoka font-medium transition-all hover:scale-105"
+                className="flex-1 bg-muted hover:bg-muted/70 text-muted-foreground px-4 py-2 rounded-full font-fredoka font-medium transition-all hover:scale-105 text-sm"
               >
-                <X className="w-5 h-5 mr-2 inline" />
+                <X className="w-4 h-4 mr-2 inline" />
                 Cancel
               </button>
             </div>

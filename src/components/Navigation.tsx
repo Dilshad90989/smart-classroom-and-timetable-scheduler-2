@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { Home, Calendar, BookOpen, Users, Settings, Menu, X } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Home, Calendar, BookOpen, Users, Settings, Menu, X, Moon, Sun } from 'lucide-react';
+import { Switch } from "@/components/ui/switch";
 
 interface NavigationProps {
   currentPage: string;
@@ -8,6 +9,26 @@ interface NavigationProps {
 
 const Navigation = ({ currentPage, onPageChange }: NavigationProps) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+    const isDark = localStorage.getItem('darkMode') === 'true';
+    setIsDarkMode(isDark);
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+    }
+  }, []);
+
+  const toggleDarkMode = () => {
+    const newDarkMode = !isDarkMode;
+    setIsDarkMode(newDarkMode);
+    localStorage.setItem('darkMode', newDarkMode.toString());
+    if (newDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  };
 
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: Home, color: 'primary' },
@@ -49,6 +70,17 @@ const Navigation = ({ currentPage, onPageChange }: NavigationProps) => {
               </button>
             );
           })}
+          
+          {/* Dark Mode Toggle */}
+          <div className="flex items-center space-x-2 ml-4 px-3 py-2 rounded-xl bg-muted/50">
+            <Sun className="h-4 w-4 text-muted-foreground" />
+            <Switch 
+              checked={isDarkMode}
+              onCheckedChange={toggleDarkMode}
+              className="data-[state=checked]:bg-primary"
+            />
+            <Moon className="h-4 w-4 text-muted-foreground" />
+          </div>
         </div>
       </nav>
 
