@@ -122,6 +122,18 @@ const Navigation = ({ currentPage, onPageChange }: NavigationProps) => {
                 </button>
               );
             })}
+            
+            {/* Mobile Dark Mode Toggle */}
+            <div className="flex items-center space-x-4 mt-6 p-4 bg-card rounded-2xl">
+              <Sun className="h-5 w-5 text-muted-foreground" />
+              <Switch 
+                checked={isDarkMode}
+                onCheckedChange={toggleDarkMode}
+                className="data-[state=checked]:bg-primary"
+              />
+              <Moon className="h-5 w-5 text-muted-foreground" />
+              <span className="text-sm font-fredoka">Dark Mode</span>
+            </div>
           </div>
         </div>
       )}
