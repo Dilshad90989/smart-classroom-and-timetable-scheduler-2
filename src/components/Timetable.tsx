@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Clock, MapPin, User, ChevronLeft, ChevronRight, Edit3, Plus } from 'lucide-react';
+import { format, addDays, startOfWeek, addWeeks } from 'date-fns';
 import EditSlotModal from './EditSlotModal';
 
 interface ClassSlot {
@@ -16,11 +17,22 @@ const Timetable = () => {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editingSlot, setEditingSlot] = useState<{ day: string; time: string; class?: ClassSlot } | null>(null);
   
+  // Starting date: September 1, 2025
+  const baseDate = new Date(2025, 8, 1); // Month is 0-indexed, so 8 = September
+  
   const timeSlots = [
     '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00'
   ];
   
-  const weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+  // Calculate the current week's dates
+  const getCurrentWeekDates = () => {
+    const weekStart = addWeeks(baseDate, currentWeek);
+    const monday = startOfWeek(weekStart, { weekStartsOn: 1 }); // Start with Monday
+    return Array.from({ length: 5 }, (_, i) => addDays(monday, i));
+  };
+  
+  const weekDates = getCurrentWeekDates();
+  const weekDays = weekDates.map(date => format(date, 'EEEE')); // Get day names for schedule keys
   
   const [schedule, setSchedule] = useState<{ [key: string]: ClassSlot[] }>({
     Monday: [
@@ -128,7 +140,7 @@ const Timetable = () => {
           </button>
           
           <h2 className="font-fredoka text-2xl font-bold">
-            Week {Math.abs(currentWeek) + 1} - March 2024
+            {format(weekDates[0], 'MMM d')} - {format(weekDates[4], 'MMM d, yyyy')}
           </h2>
           
           <button 
@@ -149,9 +161,9 @@ const Timetable = () => {
                 <Clock className="w-6 h-6 mx-auto mb-2" />
                 Time
               </div>
-              {weekDays.map((day, index) => (
+              {weekDates.map((date, index) => (
                 <div 
-                  key={day} 
+                  key={format(date, 'yyyy-MM-dd')} 
                   className={`p-4 font-fredoka font-bold text-center bg-gradient-to-r ${
                     index === 0 ? 'from-primary/20 to-primary-light/20' :
                     index === 1 ? 'from-secondary/20 to-secondary-light/20' :
@@ -161,7 +173,9 @@ const Timetable = () => {
                   } rounded-xl animate-bounce-in`}
                   style={{ animationDelay: `${(index + 1) * 100}ms` }}
                 >
-                  {day}
+                  <div className="text-sm opacity-75">{format(date, 'EEE')}</div>
+                  <div className="text-lg">{format(date, 'd')}</div>
+                  <div className="text-xs opacity-60">{format(date, 'MMM')}</div>
                 </div>
               ))}
 
